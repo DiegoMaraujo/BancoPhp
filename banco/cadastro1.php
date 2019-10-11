@@ -13,10 +13,21 @@ if($_POST['nome'] || $_POST['agencia'] || $_POST['conta'] || $_POST['senha'] != 
 	$senha =  md5(addslashes($_POST['senha']));/* aqui eu encripto a senha antes de inserir no BD*/
 	/*aqui eu monto a query*/
 	$sql ="INSERT INTO contas SET  titular = '$nome',	agencia = '$agencia',conta = '$conta', senha = '$senha'"; 	
-	/*aqui eu executo a query*/
-	$pdo->query($sql); /*posso usar a variavel $pdo sem declarar porque ela foi declarada em config.php*/		
-	/*voltar para a pagina principal*/	
-	header("Location:login.php");
+		/*aqui eu executo a query*/
+	$dados = $pdo->query($sql); /*posso usar a variavel $pdo sem declarar porque ela foi declarada em config.php*/		
+
+		if($dados->rowCount() > 0){
+			echo '<script>alert("Usuario cadastrado com sucesso")</script>';
+			?>
+			<script>
+			/*voltar para a pagina principal*/
+			location='login.php';
+			</script>
+			<?php
+		}else{
+			echo '<script>alert("Erro ao cadastrar")</script>';
+
+		}
 	}else{
 		echo '<script>alert("Preencha os campos")</script>';
 	}
